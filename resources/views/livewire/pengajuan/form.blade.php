@@ -1,3 +1,4 @@
+
 <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
     <div class="m-5">
         <x-jet-button wire:click="confirmPostCreate" wire:loading.attr="disabled">
@@ -18,13 +19,7 @@
         </x-slot>
 
         <x-slot name="content">
-
-            <div class="mt-4">
-                <x-jet-label for="name" value="{{ __('No Kegiatan - Nama Kegiatan') }}" />
-                <x-jet-input id="name" type="text" class="block w-full mt-1" wire:model.defer="name" autocomplete="current-password" />
-                <x-jet-input-error for="name" class="mt-2" />
-            </div>
-            <div class="mt-4">
+            <div class="mt-4" wire:ignore>
                 <x-jet-label for="" >KEGIATAN</x-jet-label>
                 <select name="select2" id="select2" class="block w-full mt-1 rounded-md shadow-sm form-select">
                     <option value="">-- Pilih Kegiatan --</option>
@@ -34,9 +29,9 @@
                 </select>
                 <x-jet-input-error for="text" class="mt-2" />
             </div>
-            <div class="mt-4">
+            <div class="mt-4" wire:ignore>
                 <x-jet-label for="" >REKENING</x-jet-label>
-                <select name="" id="select3" class="block w-full mt-1 rounded-md shadow-sm form-select">
+                <select name="select3" id="select3" class="block w-full mt-1 rounded-md shadow-sm form-select">
                     <option value="">-- Pilih Rekening --</option>
                     @foreach($rekenings as $row2)
                     <option value="{{ $row2->id }}">{{ $row2->nama_rekening }}</option>
@@ -44,15 +39,20 @@
                 </select>
                 <x-jet-input-error for="text" class="mt-2" />
             </div>
-            <div class="mt-4">
+            <div class="mt-4" wire:ignore>
                 <x-jet-label for="" >UNIT</x-jet-label>
-                <select name="" id="select4" class="block w-full mt-1 rounded-md shadow-sm form-select">
+                <select name="select4" id="select4" class="block w-full mt-1 rounded-md shadow-sm form-select">
                     <option value="">-- Pilih Unit --</option>
                     @foreach($units as $row3)
                     <option value="{{ $row3->id }}">{{ $row3->nama_unit }}</option>
                   @endforeach
                 </select>
                 <x-jet-input-error for="text" class="mt-2" />
+            </div>
+            <div class="mt-4">
+                <x-jet-label for="formtanggal_buat" value="{{ __('Tanggal') }}" />
+                <x-jet-input id="name" type="date" wire:model.defer="tanggal_buat"  />
+                <x-jet-input-error for="name" class="mt-2" />
             </div>
         </x-slot>
 
@@ -74,25 +74,18 @@
 </div>
 
 @push('scripts')
-<script>
-
+<script defer>
     $(document).ready(function() {
         $('#select2').select2();
         $('#select2').on('change', function (e) {
             var data = $('#select2').select2("val");
-            @this.set('defaultrek', data);
+            @this.set('defaultkeg', data);
         });
-    });
-
-     $(document).ready(function() {
         $('#select3').select2();
         $('#select3').on('change', function (e) {
             var data = $('#select3').select2("val");
-            @this.set('defaultkeg', data);
+            @this.set('defaultrek', data);
         });
-    });
-
-    $(document).ready(function() {
         $('#select4').select2();
         $('#select4').on('change', function (e) {
             var data = $('#select4').select2("val");

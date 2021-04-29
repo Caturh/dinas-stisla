@@ -31,6 +31,7 @@ class Form extends Component
      */
     public $confirmingPostCreation = false;
     public $name = '';
+    public $tanggal_buat = '';
 
     protected $rules = [
         'name' => 'required'

@@ -21,37 +21,43 @@
         <x-slot name="content">
             <div class="mt-4" wire:ignore>
                 <x-jet-label for="" >KEGIATAN</x-jet-label>
-                <select name="select2" id="select2" class="block w-full mt-1 rounded-md shadow-sm form-select">
+                <select name="select2" id="select2" class="block w-full mt-1 rounded-md shadow-sm form-select" style="width:1150px">
                     <option value="">-- Pilih Kegiatan --</option>
                     @foreach($kegiatans as $row)
-                    <option value="{{ $row->id }}">{{ $row->nama_kegiatan }}</option>
+                    <option value="{{ $row->id }}">{{ $row->no_kegiatan }} - {{ $row->nama_kegiatan }}</option>
                   @endforeach
                 </select>
                 <x-jet-input-error for="text" class="mt-2" />
             </div>
             <div class="mt-4" wire:ignore>
                 <x-jet-label for="" >REKENING</x-jet-label>
-                <select name="select3" id="select3" class="block w-full mt-1 rounded-md shadow-sm form-select">
+                <select name="select3" id="select3" class="block w-full mt-1 rounded-md shadow-sm form-select" style="width:1150px">
                     <option value="">-- Pilih Rekening --</option>
                     @foreach($rekenings as $row2)
-                    <option value="{{ $row2->id }}">{{ $row2->nama_rekening }}</option>
+                    <option value="{{ $row2->id }}">{{ $row2->no_rekening }} {{ $row2->nama_rekening }}</option>
                   @endforeach
                 </select>
                 <x-jet-input-error for="text" class="mt-2" />
             </div>
             <div class="mt-4" wire:ignore>
                 <x-jet-label for="" >UNIT</x-jet-label>
-                <select name="select4" id="select4" class="block w-full mt-1 rounded-md shadow-sm form-select">
-                    <option value="">-- Pilih Unit --</option>
+                <select name="select4" id="select4" class="block w-full mt-1 rounded-md shadow-sm form-select" style="width:1150px">
+                    <option value="disabled">-- Pilih Unit --</option>
                     @foreach($units as $row3)
-                    <option value="{{ $row3->id }}">{{ $row3->nama_unit }}</option>
+                    <option value="{{ $row3->id }}">{{ $row3->no_unit }} {{ $row3->nama_unit }}</option>
                   @endforeach
                 </select>
                 <x-jet-input-error for="text" class="mt-2" />
             </div>
             <div class="mt-4">
                 <x-jet-label for="formtanggal_buat" value="{{ __('Tanggal') }}" />
-                <x-jet-input id="name" type="date" wire:model.defer="tanggal_buat"  />
+                <x-jet-input type="text" id="basicDate" placeholder="Please select Date Time" data-input style="width:450px" />
+                <x-jet-input-error for="name" class="mt-2" />
+            </div>
+
+            <div class="mt-4">
+                <x-jet-label for="name" value="{{ __('Jumlah Pencairan') }}" />
+                <x-jet-input id="name" type="text" name="currency-field" id="currency-field" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="" data-type="currency" wire:model.defer="name" autocomplete="current-password" style="width:450px"/>
                 <x-jet-input-error for="name" class="mt-2" />
             </div>
         </x-slot>
@@ -92,6 +98,96 @@
             @this.set('defaultunit', data);
         });
     });
+
+
+    flatpickr.localize(flatpickr.l10ns.id);
+    $("#basicDate").flatpickr({
+    dateFormat: "d m Y",
+});
+
+
+    $("input[data-type='currency']").on({
+    keyup: function() {
+      formatCurrency($(this));
+    },
+    blur: function() {
+      formatCurrency($(this), "blur");
+    }
+});
+
+
+function formatNumber(n) {
+  // format number 1000000 to 1,234,567
+  return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+}
+
+
+function formatCurrency(input, blur) {
+  // appends $ to value, validates decimal side
+  // and puts cursor back in right position.
+
+  // get input value
+  var input_val = input.val();
+
+  // don't validate empty input
+  if (input_val === "") { return; }
+
+  // original length
+  var original_len = input_val.length;
+
+  // initial caret position
+  var caret_pos = input.prop("selectionStart");
+
+  // check for decimal
+  if (input_val.indexOf(".") >= 0) {
+
+    // get position of first decimal
+    // this prevents multiple decimals from
+    // being entered
+    var decimal_pos = input_val.indexOf(".");
+
+    // split number by decimal point
+    var left_side = input_val.substring(0, decimal_pos);
+    var right_side = input_val.substring(decimal_pos);
+
+    // add commas to left side of number
+    left_side = formatNumber(left_side);
+
+    // validate right side
+    right_side = formatNumber(right_side);
+
+    // On blur make sure 2 numbers after decimal
+    if (blur === "blur") {
+      right_side += "00";
+    }
+
+    // Limit decimal to only 2 digits
+    right_side = right_side.substring(0, 2);
+
+    // join number by .
+    input_val = "Rp " + left_side + "." + right_side;
+
+  } else {
+    // no decimal entered
+    // add commas to number
+    // remove all non-digits
+    input_val = formatNumber(input_val);
+    input_val = "Rp " + input_val;
+
+    // final formatting
+    if (blur === "blur") {
+      input_val += ".00";
+    }
+  }
+
+  // send updated string to input
+  input.val(input_val);
+
+  // put caret back in the right position
+  var updated_len = input_val.length;
+  caret_pos = updated_len - original_len + caret_pos;
+  input[0].setSelectionRange(caret_pos, caret_pos);
+}
 
 </script>
 @endpush

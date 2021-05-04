@@ -13,8 +13,21 @@
             <x-jet-section-border />
 
             <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
+
                 @livewire('pengajuan-datatable')
+
             </div>
+
+            <x-jet-section-border />
+
+            <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
+
+                @livewire('neraca-datatable')
+
+            </div>
+
+
+
         </div>
     </div>
 </x-app-layout>

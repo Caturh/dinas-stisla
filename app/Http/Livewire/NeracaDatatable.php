@@ -40,7 +40,7 @@ class NeracaDatatable extends LivewireDatatable
             ,
     		Column::name('kegiatans.nama_kegiatan')
             ->label('Kegiatan')
-            ->truncate()
+            //->truncate()
             ->searchable()
             //->filterable()
             ,
@@ -52,7 +52,7 @@ class NeracaDatatable extends LivewireDatatable
             ,
     		Column::name('rekenings.nama_rekening')
             ->label('No Rekening')
-            ->truncate()
+            //->truncate()
             ->searchable()
             //->filterable()
             ,
@@ -64,7 +64,7 @@ class NeracaDatatable extends LivewireDatatable
             ,
     		Column::name('units.nama_unit')
             ->label('Unit')
-            ->truncate()
+            //->truncate()
             ->searchable()
             //->filterable()
             ,

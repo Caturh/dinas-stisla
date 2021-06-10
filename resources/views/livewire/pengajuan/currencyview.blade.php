@@ -1,5 +1,5 @@
 @php
-    $value = number_format($value, 2, ',', '.');
+    $value = floatval($value);
 
     echo "Rp " .$value;
 @endphp

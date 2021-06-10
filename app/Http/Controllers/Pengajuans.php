@@ -15,6 +15,14 @@ class pengajuans extends Controller
 {
     public function index()
     {
-        return view('kegiatan.index');
+        return view('menu.pengajuan-index');
+    }
+
+    public function deletePengajuan($id)
+    {
+        if($id){
+            pengajuan::where('id',$id)->delete();
+            session()->flash('message', 'pengajuan Deleted Successfully.');
+        }
     }
 }
